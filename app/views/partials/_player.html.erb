@@ -1,0 +1,138 @@
+<hr class="border-t-[0.1px] border-gray-600" />
+<div id="mainPlayerDiv"  class="h-<%= player_sticky_height %> bg-gradient-to-b from-black to-gray-900 text-white" data-turbo-permanent>
+    <% if @selected_playlist.present? %>
+        <div class="flex items-center justify-center gap-5">
+            <video crossorigin="anonymous" src="<%= rails_blob_url(@selected_episode.audio) %>#t=<%= @selected_playlist.current_time %>" class="w-full h-0" id="player" data-player-target="player" data-action="ended->player#playerEnd keyup@window->player#spaceBarPlay" data-info-time="<%= @selected_playlist.current_time %>" data-info-episode="<%= @selected_episode.id %>" data-info-playlist="<%= @selected_playlist.id %>" ></video>
+        </div>
+    <% else %>
+        <div class="flex items-center justify-center mb-1">
+            <video crossorigin="anonymous" class="w-0 h-0" id="player" data-player-target="player"></video>
+        </div>
+    <% end %>
+    <div class="grid grid-cols-3 text-xs md:text-base px-2 md:px-89">
+        <div class="flex items-center space-x-4 mt-5">
+            <% if @selected_playlist.present? %>
+                <img class="hidden lg:inline h-6 w-6 md:h-10 md:w-10" src=<%= url_for(@selected_episode.image) %> alt="" />
+                <div>
+                    <%= link_to episode_path(@selected_episode) do %>
+                        <h3 class="truncate underline md:max-w-[15rem] lg:max-w-[22rem] hidden lg:block"><%= @selected_episode.episode_name %></h3>
+                    <% end %>
+                    <p class="truncate md:max-w-[15rem] lg:max-w-[22rem] hidden lg:block"><%= @selected_episode.show_name %></p>
+                </div>
+            <% end %>
+        </div>
+        <% if @selected_playlist.present? %>
+            <div class="flex items-center justify-center gap-5">
+                <%= button_to episode_selection_playlist_path(playlist_id: @playlist || @selected_playlist, episode_id: @selected_episode, skip: :previous), data: {turbo: false}, method: :post, id: 'skipToPreviousBtn' do %>
+                    <svg class="h-6 w-6 md:h-10 md:w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="19 20 9 12 19 4 19 20" />
+                        <line x1="5" y1="19" x2="5" y2="5" />
+                    </svg>
+                <% end %>
+                <button data-player-target="seekBack" data-action="click->player#seekBack" title="- 30s">
+                    <svg class="h-6 w-6 md:h-10 md:w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                    </svg>
+                </button>
+                <button id="playerPlayBtn" data-player-target="play" data-action="click->player#play" data-info="<%= @selected_episode.id %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 md:h-14 md:w-14 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 20 20" fill="currentColor">
+                        <path class="playPath" fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button data-player-target="seekForward" data-action="click->player#seekForward" title="+ 30s">
+                    <svg class="h-6 w-6 md:h-10 md:w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                    </svg>
+                </button>
+                <%= button_to episode_selection_playlist_path(playlist_id: @playlist || @selected_playlist, episode_id: @selected_episode, skip: :next), data: {turbo: false}, method: :post, id: 'skipToNextBtn', class: 'flex justify-center items-center', title: 'Next' do %>
+                    <svg class="h-6 w-6 md:h-10 md:w-10 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 4 15 12 5 20 5 4" />
+                        <line x1="19" y1="5" x2="19" y2="19" />
+                    </svg>
+                <% end %>
+            </div>
+            <div class="hidden md:flex items-center space-x-3 md:space-x-4 justify-end pr-5">
+                <button data-player-target="volumeDown" data-action="click->player#volumeDown" title="Decrease Volume">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 cursor-pointer hover:scale-125 transition transform duration-100 ease-out pointerEvents:none" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <input data-player-target="volumeRange" data-action="change->player#volumeRange" class="w-28" type="range" min="0" max="100" />
+                <button data-player-target="volumeUp" data-action="click->player#volumeUp" title="Increase Volume">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 cursor-pointer hover:scale-125 transition transform duration-100 ease-out" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        <% else %>
+            <div class="flex items-center justify-center gap-5">
+                <button id="skipToPreviousBtn" disabled>
+                    <svg class="h-6 w-6 md:h-10 md:w-10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="19 20 9 12 19 4 19 20" />
+                        <line x1="5" y1="19" x2="5" y2="5" />
+                    </svg>
+                </button>
+                <button data-player-target="seekBack" data-action="click->player#seekBack" disabled>
+                    <svg class="h-6 w-6 md:h-10 md:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                    </svg>
+                </button>
+                <button id="playerPlayBtn" data-player-target="play" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 md:h-14 md:w-14" viewBox="0 0 20 20" fill="currentColor">
+                        <path class="playPath" fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button data-player-target="seekForward" data-action="click->player#seekForward" disabled>
+                    <svg class="h-6 w-6 md:h-10 md:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                    </svg>
+                </button>
+                <button id="skipToNextBtn" disabled>
+                    <svg class="h-6 w-6 md:h-10 md:w-10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 4 15 12 5 20 5 4" />
+                        <line x1="19" y1="5" x2="19" y2="19" />
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden md:flex items-center space-x-3 md:space-x-4 justify-end pr-5">
+                <button data-player-target="volumeDown" data-action="click->player#volumeDown" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <input data-player-target="volumeRange" data-action="change->player#volumeRange" class="w-28" type="range" min="0" max="100" disabled />
+                <button data-player-target="volumeUp" data-action="click->player#volumeUp" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        <% end %>
+    </div>
+    <% if @selected_episode.present? %>
+        <div class="grid grid-cols-3">
+    <% else %>
+        <div class="grid grid-cols-3 mt-2">
+    <% end %>
+        <div class="flex items-center justify-end xl:-mr-4 lg:-mr-6 text-xl">
+            <div class="w-20" id="currentTime" data-player-target="currentTimeDiv"></div>
+        </div>
+        <div class="flex items-center justify-center">
+            <% if @selected_episode.present? %>
+                <input id="seekSliderInput" data-player-target="seekSlider" data-action="input->player#seekSlideInput change->player#seekSlideChange" class="w-full" type="range" value="0" min="0" max="<%= @selected_episode.duration %>" />
+            <% else %>
+                <input id="seekSliderInput" data-player-target="seekSlider" data-action="input->player#seekSlideInput change->player#seekSlideChange" class="w-full" type="range" value="0" min="0" max="100" disabled />
+            <% end %>
+        </div>
+        <div class="flex items-center justify-start ml-8 xl:ml-4 lg:ml-2 text-lg">
+            <div class="w-20" id="durationContainer" data-player-target="durationDiv"></div>
+        </div>
+    </div>
+    <div class="flex justify-center italic text-sm md:text-md">
+        © <%= Date.current.year %>&nbsp;<a href="mailto:yashar.moshfeghi@strath.ac.uk">NeuraSearch Laboratory</a>. All Rights Reserved.
+    </div>
+</div>

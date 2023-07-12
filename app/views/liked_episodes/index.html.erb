@@ -1,0 +1,61 @@
+<div class="bg-black h-screen overflow-hidden">
+    <main class="flex">
+        <%= render partial: "partials/sidebar" %>
+        <div class="flex-grow h-screen overflow-y-scroll scollbar-hide">
+            <%= render partial: "partials/header" %>
+            <section class="flex items-end space-x-7 bg-gradient-to-b to-zinc-800 from-blue-500 h-56 text-white p-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                </svg>
+                <h1 class="text-2xl md:text-3xl xl:text-5xl font-bold">Episodes</h1>
+            </section>
+            <section class="pb-80">
+                <div class="bg-gradient-to-b to-black from-zinc-900 md:px-8 flex flex-col space-y-1 pt-3 text-white text-md md:text-lg">
+                    <div class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-400 py-4 px-2 md:px-5 italic">
+                        <div class="flex items-center space-x-2 md:space-x-4 col-span-4 lg:col-span-5">
+                            <h2>#</h2>
+                            <h2>Episode Name</h2>
+                        </div>
+                        <div class="hidden lg:flex items-center justify-between col-span-4">
+                            <h2>Show Name</h2>
+                        </div>
+                        <div class="hidden md:flex items-center justify-between">
+                            <h2>Duration</h2>
+                        </div>
+                        <div class="flex items-center justify-end col-span-2">
+                            <h2>Actions</h2>
+                        </div>
+                    </div>
+                    <hr class="border-t-[0.1px] border-gray-700" />
+                    <% @liked_episodes.each_with_index do |e, i| %>
+                        <div class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-300 py-4 px-2 md:px-5 hover:bg-gray-700 rounded-lg">
+                            <div class="flex items-center space-x-2 md:space-x-4 col-span-4 lg:col-span-5">
+                                <%= link_to episode_path(e) do %>
+                                    <div class="flex items-center space-x-2 md:space-x-4 cursor-pointer">
+                                        <p><%= i + 1 %></p>
+                                        <img class="hidden lg:inline h-10 w-10" src=<%= url_for(e.image) %> alt="" />
+                                        <div>
+                                            <p class="break-all w-18 md:w-28 lg:w-64 text-white"><%= e.episode_name %></p>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                            <div class="hidden lg:flex items-center justify-between col-span-4">
+                                <p class="w-36 lg:w-64 truncate"><%= e.show_name %></p>
+                            </div>
+                            <div class="hidden md:flex items-center justify-between">
+                                <p><%= episode_information_formatting_time(e.duration) %></p>
+                            </div>
+                            <div class="flex items-center justify-end gap-2 md:gap-6 col-span-2">
+                                <%= generate_button_svg_thumbs_and_comment(e, 8, 8) %>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div class="sticky bottom-0 h-<%= player_sticky_height %>">
+        <%= render partial: "partials/player" %>
+    </div>
+</div>

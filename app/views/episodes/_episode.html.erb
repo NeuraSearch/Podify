@@ -1,0 +1,28 @@
+<div id="<%= dom_id episode %>">
+    <% if @selected_playlist == @playlist && @selected_episode == episode %>
+        <div data-id="<%= episode.id %>" class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-300 py-4 px-2 md:px-5 bg-green-900 rounded-lg">
+    <% else %>
+        <div data-id="<%= episode.id %>" class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-300 py-4 px-2 md:px-5 hover:bg-gray-700 rounded-lg">
+    <% end %>
+        <div class="flex items-center space-x-2 md:space-x-4 col-span-4 lg:col-span-5">
+            <%= generate_episode_play_button(episode) %>
+            <%= link_to episode_path(episode) do %>
+                <div class="flex items-center space-x-2 md:space-x-4 pr-3 cursor-pointer">
+                    <img class="hidden lg:inline h-10 w-10" src=<%= url_for(episode.image) %> alt="" />
+                    <div>
+                        <p class="break-all w-18 text-white"><%= episode.episode_name %></p>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="hidden lg:flex items-center justify-between col-span-4">
+            <p class="w-36 lg:w-64 hidden lg:inline truncate"><%= episode.show_name %></p>
+        </div>
+        <div class="hidden md:flex items-center justify-between">
+            <p><%= episode_information_formatting_time(episode.duration) %></p>
+        </div>
+        <div class="flex items-center justify-end gap-1 md:gap-3 lg:gap-3 xl:gap-6 col-span-2">
+            <%= generate_button_svg_thumbs_and_remove_from_playlist(episode) %>
+        </div>
+    </div>
+</div>

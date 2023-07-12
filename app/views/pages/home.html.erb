@@ -1,0 +1,43 @@
+<div class="bg-black h-screen overflow-hidden">
+    <main class="flex">
+        <%= render partial: "partials/sidebar" %>
+        <div class="bg-gradient-to-b to-black from-zinc-700 flex-grow h-screen overflow-y-scroll scollbar-hide">
+            <%= render partial: "partials/header" %>
+            <section class="flex items-end p-8">
+                <div class="relative md:px-5 md:py-4 mt-12 md:mt-0 border bg-white outline-none rounded-full text-black placeholder-gray-600 w-full md:w-1/2">
+                    <%= form_tag(root_path, method: :get) do %>
+                        <%= button_tag(type: "submit", class: "absolute inset-y-0 left-0 flex items-center") do %>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-2 md:pl-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </span>
+                        <% end %>
+                        <%= text_field_tag(:query, params[:query], placeholder: "Start Your Podcast Search", class: "pl-7 text-sm md:text-md lg:text-lg rounded-full w-full border-transparent focus:border-transparent focus:ring-0" ) %>
+                    <% end %>
+                </div>
+            </section>
+            <div class="px-8">
+                <h2 class="text-xl md:text-4xl font-semibold mb-3 text-white">Your Search Results</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 justify-center md:px-8 pb-80">
+                    <% if @episodes %>
+                        <% @episodes.each_with_index do |e, i| %>
+                            <%= link_to episode_path(e, rank: i + 1) do %>
+                                <div class="justify-center justify-self-center mx-auto rounded-xl cursor-pointer p-4 md:p-8 w-52 hover:bg-gray-700 hover:scale-105 transition transform duration-200 ease-out text-md">
+                                    <div class="relative inline-flex">
+                                        <img class="rounded-lg h-50 w-40 mb-5" src=<%= url_for(e.image) %> alt="" />
+                                    </div>
+                                    <h1 class="text-white font-bold truncate max-w-[10rem] md:max-w-[14rem] lg:max-w-[10rem]"><%= e.episode_name %></h1>
+                                    <h1 class="text-gray-300"><%= episode_information_formatting_with_year(e.publication_date, e.duration) %></h1>
+                                </div>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="sticky bottom-0 h-<%= player_sticky_height %>">
+        <%= render partial: "partials/player" %>
+    </div>
+</div>

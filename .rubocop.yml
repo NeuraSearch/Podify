@@ -1,0 +1,18 @@
+AllCops:
+    NewCops: enable
+
+Metrics/BlockLength:
+    Exclude:
+        - 'app/admin/*'
+
+Layout/IndentationWidth:
+    Width: 4
+
+Style/FrozenStringLiteralComment:
+    EnforcedStyle: never
+
+Layout/LineLength:
+    Enabled: false
+
+Style/Documentation:
+    Enabled: false

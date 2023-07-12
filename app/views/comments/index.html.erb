@@ -1,0 +1,41 @@
+<div class="bg-black h-screen overflow-hidden">
+    <main class="flex">
+        <%= render partial: "partials/sidebar" %>
+        <div class="flex-grow h-screen overflow-y-scroll scollbar-hide">
+            <%= render partial: "partials/header" %>
+            <section class="flex items-end space-x-7 bg-gradient-to-b to-zinc-800 from-white h-56 text-white p-8">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
+                    <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
+                </svg>
+                <h1 class="text-2xl md:text-3xl xl:text-5xl font-bold">Your Feedback</h1>
+            </section>
+            <section class="pb-80">
+                <div class="bg-gradient-to-b to-black from-zinc-900 md:px-8 flex flex-col space-y-1 pt-3 text-white text-md md:text-lg">
+                    <div class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-400 py-4 px-2 md:px-5 italic">
+                        <div class="flex items-center space-x-2 md:space-x-4 col-span-3 lg:col-span-5">
+                            <h2>Episode Name</h2>
+                        </div>
+                        <div class="flex items-center justify-between col-span-2 md:col-span-3 lg:col-span-5">
+                            <h2>Description</h2>
+                        </div>
+                        <div class="hidden md:flex items-center justify-between">
+                            <h2>Rating</h2>
+                        </div>
+                        <div class="flex items-center justify-end">
+                            <h2>Actions</h2>
+                        </div>
+                    </div>
+                    <hr class="border-t-[0.1px] border-gray-700" />
+                    <div class="flex flex-col">
+                        <div id="comments">
+                            <%= render @comments %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div class="sticky bottom-0 h-<%= player_sticky_height %>">
+        <%= render partial: "partials/player" %>
+    </div>
+</div>

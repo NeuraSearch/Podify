@@ -1,0 +1,9 @@
+<hr class="border-t-[0.1px] border-gray-400 mt-6" />
+<div class="actions mt-6">
+    <% if controller_name != 'sessions' %>
+        <%= link_to "Log in", new_session_path(resource_name), class: "flex flex-col opacity-70 items-center cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-lg w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" %><br />
+    <% end %>
+    <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+        <%= link_to "Sign up", new_registration_path(resource_name), class: "flex flex-col opacity-70 items-center cursor-pointer text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-lg w-full px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" %><br />
+    <% end %>
+</div>

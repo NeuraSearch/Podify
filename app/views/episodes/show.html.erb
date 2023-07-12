@@ -1,0 +1,51 @@
+<div class="bg-black h-screen overflow-hidden">
+    <main class="flex">
+        <%= render partial: "partials/sidebar" %>
+        <div class="flex-grow h-screen overflow-y-scroll scollbar-hide">
+            <%= render partial: "partials/header" %>
+            <section class="flex items-end bg-gradient-to-b to-teal-800 from-teal-500 h-64 text-white p-4 md:pl-8 md:pt-8">
+                <img class="hidden md:inline h-44 w-44 shadow-2xl text-lg" src=<%= url_for(@episode.image) %> alt="" />
+                <div class="md:pl-4 md:pt-10">
+                    <p class="hidden lg:inline">EPISODE</p>
+                    <h1 class="text-xl md:text-xl lg:text-3xl xl:text-4xl font-bold md:max-w-sm lg:max-w-sm xl:max-w-5xl pt-2 pb-2"><%= @episode.episode_name.html_safe %></h1>
+                    <p class="font-bold italic"><%= @episode.show_name.html_safe %></p>
+                </div>
+            </section>
+            <section class="flex flex-col space-y-2 md:space-y-5 bg-gradient-to-b to-black from-teal-900 text-white p-4 md:p-8 text-lg">
+                <h1><%= episode_information_formatting_with_year(@episode.publication_date, @episode.duration) %></h1>
+                <div class="flex flex-col space-y-2 md:space-y-5" aria-label="Breadcrumb">
+                    <%= generate_categories_breadcrumb %>
+                </div>
+                <div class="flex items-center gap-2 md:gap-10">
+                    <%= generate_button_svg_thumbs_and_add_to_playlist %>
+                    <% if @current_comment.present? %>
+                        <%= button_to "Edit Feedback", edit_comment_path(episode_id: @episode.id, id: @current_comment.id), method: :get, data: { turbo_frame: "commentmodal" }, class: "text-md md:text-lg rounded-full py-1 md:py-3 px-2 md:px-4 text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 font-medium cursor-pointer hover:scale-110 transition transform duration-100 ease-out" %>
+                    <% else %>
+                        <%= button_to "Provide Feedback", new_comment_path(@episode), method: :get, data: { turbo_frame: "commentmodal" }, class: "text-md md:text-lg rounded-full py-1 md:py-3 px-2 md:px-4 text-gray-900 focus:outline-none bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 font-medium cursor-pointer hover:scale-110 transition transform duration-100 ease-out" %>
+                    <% end %>
+                </div>
+            </section>
+            <section class="text-white pb-80">
+                <% if @episode.episode_description.present? %>
+                    <div class="flex flex-col space-y-2 md:space-y-5 p-4 md:p-8">
+                        <h1 class="text-lg md:text-2xl xl:text-3xl font-bold">Episode Description</h1>
+                        <div class="break-all max-w-sm md:max-w-xl lg:max-w-lg xl:max-w-7xl text-lg">
+                            <p><%= @episode.episode_description %></p>
+                        </div>
+                    </div>
+                <% end %>
+                <% if @episode.show_description.present? %>
+                    <div class="flex flex-col space-y-2 md:space-y-5 p-4 md:p-8">
+                        <h1 class="text-lg md:text-xl xl:text-2xl italic font-bold">Show Description</h1>
+                        <div class="break-all max-w-sm md:max-w-xl lg:max-w-lg xl:max-w-7xl italic text-lg">
+                            <p><%= @episode.show_description %></p>
+                        </div>
+                    </div>
+                <% end %>
+            </section>
+        </div>
+    </main>
+    <div class="sticky bottom-0 h-<%= player_sticky_height %>">
+        <%= render partial: "partials/player" %>
+    </div>
+</div>

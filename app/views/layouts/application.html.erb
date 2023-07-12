@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Podify</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <%= csrf_meta_tags %>
+        <%= csp_meta_tag %>
+        <%= stylesheet_link_tag "inter-font", "data-turbo-track": "reload" %>
+        <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+        <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+        <%= javascript_importmap_tags %>
+        <%= javascript_import_module_tag "like_dislike" %>
+    </head>
+    <body data-controller="player" id="main-body">
+        <%= turbo_frame_tag "commentmodal" %>
+        <%= turbo_frame_tag "renameplaylistmodal" %>
+        <%= yield %>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<%= form_for(@comment, remote:true) do |form| %>
+    <% if comment.errors.any? %>
+        <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+            <ul>
+                <% comment.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <div class="mb-6">
+        <%= form.label "Your Feedback:", class: "block mb-2 text-md md:text-xl font-medium text-gray-900 dark:text-gray-400" %>
+        <%= form.text_area :description, rows: 8, class: "block p-2.5 w-full text-md md:text-xl text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "What did you like about this episode? What did you not like about it? Please provide your feedback." %>
+    </div>
+    <div class="mb-6">
+        <%= form.label "Rating:", class: "block mb-2 text-md md:text-xl font-medium text-gray-900 dark:text-gray-400" %>
+        <div class="rating">
+            <%= form.collection_radio_buttons(:rating, [[5],[4],[3],[2],[1]], :first, :last) do |star| %>
+                <%= star.radio_button %>
+                <%= star.label(class: "text-white") %>
+            <% end %>
+        </div>
+    </div>
+    <div><%= form.submit "Submit", class: "cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md md:text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" %>
+<% end %>

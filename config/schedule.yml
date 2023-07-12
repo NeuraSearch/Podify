@@ -1,0 +1,5 @@
+# cron job schedule - run ExportBehaviourJob every 15 minutes
+# the job can be found at "app/sidekiq/export_behaviour_job.rb"
+export_behaviour_job:
+  cron: "*/15 * * * *"
+  class: "ExportBehaviourJob"

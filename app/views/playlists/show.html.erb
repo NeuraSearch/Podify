@@ -1,0 +1,42 @@
+<div class="bg-black h-screen overflow-hidden">
+    <main class="flex">
+        <%= render partial: "partials/sidebar" %>
+        <div class="flex-grow h-screen overflow-y-scroll scollbar-hide">
+            <%= render partial: "partials/header" %>
+            <section class="flex flex-row items-end space-x-7 bg-gradient-to-b to-zinc-800 from-blue-500 h-56 text-white p-8">
+                    <div class="-mb-4">
+                        <%= generate_play_button %>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl xl:text-5xl font-bold"><%= @playlist.name %></h1>
+            </section>
+            <section class="pb-80">
+                <div class="px-2 md:px-8 flex flex-col space-y-1 pt-3 text-white bg-gradient-to-b to-black from-zinc-900 text-md md:text-lg">
+                    <div class="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 text-gray-400 py-4 px-2 md:px-5 italic">
+                        <div class="flex items-center space-x-2 md:space-x-4 col-span-4 lg:col-span-5">
+                            <h2>Play</h2>
+                            <h2>Episode Name</h2>
+                        </div>
+                        <div class="hidden lg:flex items-center justify-between col-span-4">
+                            <h2>Show Name</h2>
+                        </div>
+                        <div class="hidden md:flex items-center justify-between">
+                            <h2>Duration</h2>
+                        </div>
+                        <div class="flex items-center justify-end col-span-2">
+                            <h2>Actions</h2>
+                        </div>
+                    </div>
+                    <hr class="border-t-[0.1px] border-gray-700" />
+                    <div class="flex flex-col">
+                        <div id="playlists" data-controller="drag" data-drag-url="/playlists/:id/move/:episode_id">
+                            <%= render @playlist.episodes.order(position: :asc) %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div class="sticky bottom-0 h-<%= player_sticky_height %>">
+        <%= render partial: "partials/player" %>
+    </div>
+</div>

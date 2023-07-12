@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "commentmodal" do %>
+    <%= tag.div data: { controller: "turbo-commentmodal",
+                        turbo_commentmodal_target: "commentmodal",
+                        action: "turbo:submit-end->turbo-commentmodal#submitEnd keyup@window->turbo-commentmodal#closeWithKeyboard click@window->turbo-commentmodal#closeBackground" },
+                        class: "p-5 absolute z-10 top-20 right-10 w-64 md:w-96 break-words bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700" do %>
+        <%= content %>
+        <%= button_tag "Close", data: { action: "turbo-commentmodal#hideModal" }, type: "button", class: "cursor-pointer text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md md:text-xl w-full sm:w-auto px-5 py-2.5 mt-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" %>
+    <% end %>
+<% end %>
