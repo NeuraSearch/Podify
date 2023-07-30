@@ -11,9 +11,25 @@ class ExportBehaviourJob
         )
         # Create a new logging filename
         filename = "logging/behaviour-#{DateTime.now.strftime('%Y-%m-%d-%H-%M-%S')}.csv"
+
+        # Retrieve the enumerator containing all the logging
+        csv_enum = Ahoy::Event.csv_enumerator
+
         # Create a new object in the S3 bucket
         obj = s3.bucket(Rails.application.credentials.aws[:bucket_name]).object(filename)
-        # Populate the object/file with the Ahoy Events
-        obj.put(body: Ahoy::Event.to_csv)
+
+        # Populate the object/file with the logs
+        obj.upload_stream(tempfile: true) do |write_stream|
+            # When uploading compressed data, use binmode to avoid an encoding error.
+            write_stream.binmode
+
+            Zlib::GzipWriter.wrap(write_stream) do |gzw|
+                CSV(gzw) do |csv|
+                    csv_enum.each do |record|
+                        csv << [record]
+                    end
+                end
+            end
+        end
     end
 end
