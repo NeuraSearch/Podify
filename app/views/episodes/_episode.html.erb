@@ -22,7 +22,7 @@
             <p><%= episode_information_formatting_time(episode.duration) %></p>
         </div>
         <div class="flex items-center justify-end gap-1 md:gap-3 lg:gap-3 xl:gap-6 col-span-2">
-            <%= generate_button_svg_thumbs_and_remove_from_playlist(episode) %>
+            <%= generate_button_svg_thumbs_and_remove_from_playlist(@playlist || @selected_playlist, episode) %>
         </div>
     </div>
 </div>

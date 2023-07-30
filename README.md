@@ -2,7 +2,7 @@
 
 Podify is the first podcast streaming service specifically designed for academic research. With high resemblances to existing modern streaming services, and a scalable design to accommodate large-scale user studies, it implements a customisable catalogue search, with manual playlist creation and curation, podcast listening, and explicit and implicit feedback collection mechanisms. With all user interactions automatically logged by the platform and easily exportable in a readable format for subsequent analysis, Podify aims to reduce the overhead researchers face when conducting user studies.
 
-This repository contains the source code for the platform outlined in the Demonstration Paper [Podify: A Podcast Streaming Platform with Automatic Logging of User Behaviour for Academic Research](https://pureportal.strath.ac.uk/en/publications/podify-a-podcast-streaming-platform-with-automatic-logging-of-use), accepted at the _46th International ACM SIGIR Conference on Research and Development in Information Retrieval_ ([SIGIR2023](https://sigir.org/sigir2023/)).
+This repository contains the source code for the platform outlined in the Demonstration Paper [Podify: A Podcast Streaming Platform with Automatic Logging of User Behaviour for Academic Research](https://dl.acm.org/doi/10.1145/3539618.3591824), accepted at the _46th International ACM SIGIR Conference on Research and Development in Information Retrieval_ ([SIGIR2023](https://sigir.org/sigir2023/)).
 
 For the YouTube presentation of this platform, please click [here](https://www.youtube.com/watch?v=k9Z5w_KKHr8).
 
@@ -10,7 +10,7 @@ To know more about our research activities at NeuraSearch Laboratory, please fol
 
 # Installation
 
-1. [Ruby](https://www.ruby-lang.org/en/documentation/installation/)
+1. [Ruby](https://www.ruby-lang.org/en/documentation/installation/) v3.0.2
     - It is recommended to use a version manager such as [rbenv](https://github.com/rbenv/rbenv)
 3. Bundler:
     - `gem install bundler`
@@ -117,4 +117,30 @@ git push heroku main
 heroku run rake db:migrate
 heroku ps:scale web=1
 heroku open
+```
+
+# Cite
+Please, cite this work as follows:
+
+```
+@inproceedings{10.1145/3539618.3591824,
+    author = {Meggetto, Francesco and Moshfeghi, Yashar},
+    title = {Podify: A Podcast Streaming Platform with Automatic Logging of User Behaviour for Academic Research},
+    year = {2023},
+    isbn = {9781450394086},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3539618.3591824},
+    doi = {10.1145/3539618.3591824},
+    booktitle = {Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval},
+    pages = {3215–3219},
+    numpages = {5},
+    keywords = {user behaviour, platform, podcast, logging, listening, search},
+    location = {Taipei, Taiwan},
+    series = {SIGIR '23}
+}
+```
+
+```
+Francesco Meggetto and Yashar Moshfeghi. 2023. Podify: A Podcast Streaming Platform with Automatic Logging of User Behaviour for Academic Research. In Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR '23). Association for Computing Machinery, New York, NY, USA, 3215–3219. https://doi.org/10.1145/3539618.3591824
 ```

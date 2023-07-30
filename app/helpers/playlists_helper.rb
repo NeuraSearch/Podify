@@ -29,11 +29,11 @@ module PlaylistsHelper
 
     # Generation for the "Like - Dislike Add To Playlist - Remove Episode From Playlist"
     # They can be found in the episode's page
-    def generate_button_svg_thumbs_and_remove_from_playlist(episode)
+    def generate_button_svg_thumbs_and_remove_from_playlist(playlist, episode)
         tup, tdown = generate_like_dislike_buttons(episode, 8, 8)
         tfeed = generate_feedback_button(episode, 8, 8)
 
-        tdel = button_to remove_episode_playlist_path(id: @playlist, episode_id: episode), method: :post, title: 'Remove From Playlist', form: { data: { turbo_confirm: 'Are you sure?' } } do
+        tdel = button_to remove_episode_playlist_path(playlist_id: playlist.id, episode_id: episode.id), method: :post, title: 'Remove From Playlist', form: { data: { turbo_confirm: 'Are you sure?' } } do
             content_tag(:svg, xmlns: 'http://www.w3.org/2000/svg', class: 'h-6 w-6 md:h-9 md:w-9 lg:h-10 lg:w-10 fill-red-500 cursor-pointer hover:scale-125 transition transform duration-100 ease-out', viewBox: '0 0 20 20', fill: 'currentColor') do
                 "<path fill-rule='evenodd' d='M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z' clip-rule='evenodd' />".html_safe
             end
